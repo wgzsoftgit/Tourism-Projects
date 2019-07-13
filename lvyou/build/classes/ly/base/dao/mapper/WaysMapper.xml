@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ly.base.dao.mapper.WaysMapper" >
+  <resultMap id="BaseResultMap" type="ly.base.po.domain.Ways" >
+    <id column="way_id" property="wayId" jdbcType="INTEGER" />
+    <result column="way_name" property="wayName" jdbcType="VARCHAR" />
+    <result column="way_content" property="wayContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    way_id, way_name, way_content
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="ly.base.po.domain.WaysExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ways
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <!-- 分页查询  总数 -->
+  <select id="findProductPageBean" resultMap="BaseResultMap" parameterType="map">
+    select 
+     <include refid="Base_Column_List" />
+     from ways limit #{startIndex},#{currentCount}
+    </select>
+  <select id="getTotalCount" resultType="java.lang.Integer">
+    select count(*) from ways
+    </select>
+   
+    <!-- 查询9条记录 -->
+    <select id="findWaysnine" resultMap="BaseResultMap" >
+    select 
+     <include refid="Base_Column_List" />
+     from ways limit 0,9
+    </select>
+    
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ways
+    where way_id = #{wayId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ways
+    where way_id = #{wayId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ly.base.po.domain.WaysExample" >
+    delete from ways
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ly.base.po.domain.Ways" >
+    insert into ways (way_id, way_name, way_content
+      )
+    values (#{wayId,jdbcType=INTEGER}, #{wayName,jdbcType=VARCHAR}, #{wayContent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ly.base.po.domain.Ways" >
+    insert into ways
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wayId != null" >
+        way_id,
+      </if>
+      <if test="wayName != null" >
+        way_name,
+      </if>
+      <if test="wayContent != null" >
+        way_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wayId != null" >
+        #{wayId,jdbcType=INTEGER},
+      </if>
+      <if test="wayName != null" >
+        #{wayName,jdbcType=VARCHAR},
+      </if>
+      <if test="wayContent != null" >
+        #{wayContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ly.base.po.domain.WaysExample" resultType="java.lang.Integer" >
+    select count(*) from ways
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ways
+    <set >
+      <if test="record.wayId != null" >
+        way_id = #{record.wayId,jdbcType=INTEGER},
+      </if>
+      <if test="record.wayName != null" >
+        way_name = #{record.wayName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wayContent != null" >
+        way_content = #{record.wayContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ways
+    set way_id = #{record.wayId,jdbcType=INTEGER},
+      way_name = #{record.wayName,jdbcType=VARCHAR},
+      way_content = #{record.wayContent,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ly.base.po.domain.Ways" >
+    update ways
+    <set >
+      <if test="wayName != null" >
+        way_name = #{wayName,jdbcType=VARCHAR},
+      </if>
+      <if test="wayContent != null" >
+        way_content = #{wayContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where way_id = #{wayId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ly.base.po.domain.Ways" >
+    update ways
+    set way_name = #{wayName,jdbcType=VARCHAR},
+      way_content = #{wayContent,jdbcType=VARCHAR}
+    where way_id = #{wayId,jdbcType=INTEGER}
+  </update>
+</mapper>

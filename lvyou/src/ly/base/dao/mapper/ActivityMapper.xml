@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ly.base.dao.mapper.ActivityMapper" >
+  <resultMap id="BaseResultMap" type="ly.base.po.domain.Activity" >
+    <id column="act_id" property="actId" jdbcType="INTEGER" />
+    <result column="act_time" property="actTime" jdbcType="VARCHAR" />
+    <result column="act_content" property="actContent" jdbcType="VARCHAR" />
+    <result column="act_ispush" property="actIspush" jdbcType="INTEGER" />
+    <result column="act_count" property="actCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    act_id, act_time, act_content, act_ispush, act_count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="ly.base.po.domain.ActivityExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from activity
+    where act_id = #{actId,jdbcType=INTEGER}
+  </select>
+  <!-- 分页查询  总数 -->
+  <select id="findProductPageBean" resultMap="BaseResultMap" parameterType="map">
+    select 
+     <include refid="Base_Column_List" />
+     from activity limit #{startIndex},#{currentCount}
+    </select>
+    <!-- 查询8条记录 -->
+    <select id="findActivitynine" resultMap="BaseResultMap" >
+    select 
+     <include refid="Base_Column_List" />
+     from activity limit 0,8
+    </select>
+    
+  <select id="getTotalCount" resultType="java.lang.Integer">
+    select count(*) from activity
+    </select>
+    
+    
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from activity
+    where act_id = #{actId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ly.base.po.domain.ActivityExample" >
+    delete from activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ly.base.po.domain.Activity" >
+    insert into activity (act_id, act_time, act_content, 
+      act_ispush, act_count)
+    values (#{actId,jdbcType=INTEGER}, #{actTime,jdbcType=VARCHAR}, #{actContent,jdbcType=VARCHAR}, 
+      #{actIspush,jdbcType=INTEGER}, #{actCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="ly.base.po.domain.Activity" >
+    insert into activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actId != null" >
+        act_id,
+      </if>
+      <if test="actTime != null" >
+        act_time,
+      </if>
+      <if test="actContent != null" >
+        act_content,
+      </if>
+      <if test="actIspush != null" >
+        act_ispush,
+      </if>
+      <if test="actCount != null" >
+        act_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actId != null" >
+        #{actId,jdbcType=INTEGER},
+      </if>
+      <if test="actTime != null" >
+        #{actTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actContent != null" >
+        #{actContent,jdbcType=VARCHAR},
+      </if>
+      <if test="actIspush != null" >
+        #{actIspush,jdbcType=INTEGER},
+      </if>
+      <if test="actCount != null" >
+        #{actCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ly.base.po.domain.ActivityExample" resultType="java.lang.Integer" >
+    select count(*) from activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update activity
+    <set >
+      <if test="record.actId != null" >
+        act_id = #{record.actId,jdbcType=INTEGER},
+      </if>
+      <if test="record.actTime != null" >
+        act_time = #{record.actTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actContent != null" >
+        act_content = #{record.actContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actIspush != null" >
+        act_ispush = #{record.actIspush,jdbcType=INTEGER},
+      </if>
+      <if test="record.actCount != null" >
+        act_count = #{record.actCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update activity
+    set act_id = #{record.actId,jdbcType=INTEGER},
+      act_time = #{record.actTime,jdbcType=VARCHAR},
+      act_content = #{record.actContent,jdbcType=VARCHAR},
+      act_ispush = #{record.actIspush,jdbcType=INTEGER},
+      act_count = #{record.actCount,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ly.base.po.domain.Activity" >
+    update activity
+    <set >
+      <if test="actTime != null" >
+        act_time = #{actTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actContent != null" >
+        act_content = #{actContent,jdbcType=VARCHAR},
+      </if>
+      <if test="actIspush != null" >
+        act_ispush = #{actIspush,jdbcType=INTEGER},
+      </if>
+      <if test="actCount != null" >
+        act_count = #{actCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where act_id = #{actId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ly.base.po.domain.Activity" >
+    update activity
+    set act_time = #{actTime,jdbcType=VARCHAR},
+      act_content = #{actContent,jdbcType=VARCHAR},
+      act_ispush = #{actIspush,jdbcType=INTEGER},
+      act_count = #{actCount,jdbcType=INTEGER}
+    where act_id = #{actId,jdbcType=INTEGER}
+  </update>
+</mapper>

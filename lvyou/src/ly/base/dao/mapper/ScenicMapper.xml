@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper  namespace="ly.base.dao.mapper.ScenicMapper" >
+  <resultMap id="BaseResultMap" type="ly.base.po.domain.Scenic" >
+    <id column="sce_id" property="sceId" jdbcType="INTEGER" />
+    <result column="sce_name" property="sceName" jdbcType="VARCHAR" />
+    <result column="sce_picture" property="scePicture" jdbcType="VARCHAR" />
+    <result column="sce_content" property="sceContent" jdbcType="VARCHAR" />
+    <result column="sce_price" property="scePrice" jdbcType="REAL" />
+    <result column="sce_vprice" property="sceVprice" jdbcType="REAL" />
+    <result column="sce_count" property="sceCount" jdbcType="INTEGER" />
+    <result column="sce_ispush" property="sceIspush" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    sce_id, sce_name, sce_picture, sce_content, sce_price, sce_vprice, sce_count, sce_ispush
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="ly.base.po.domain.ScenicExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from scenic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+   <!-- 分页查询  总数 -->
+  <select id="findProductPageBean" resultMap="BaseResultMap" parameterType="map">
+    select 
+     <include refid="Base_Column_List" />
+     from scenic limit #{startIndex},#{currentCount}
+    </select>
+    
+    <!-- //查询10条记录 -->
+     <select id="findScenicten" resultMap="BaseResultMap" >
+    select 
+     <include refid="Base_Column_List" />
+     from scenic limit 0,9
+    </select>
+    
+  <select id="getTotalCount" resultType="java.lang.Integer">
+    select count(*) from scenic
+    </select>
+    
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from scenic
+    where sce_id = #{sceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from scenic
+    where sce_id = #{sceId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ly.base.po.domain.ScenicExample" >
+    delete from scenic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ly.base.po.domain.Scenic" >
+    insert into scenic (sce_id, sce_name, sce_picture, 
+      sce_content, sce_price, sce_vprice, 
+      sce_count, sce_ispush)
+    values (#{sceId,jdbcType=INTEGER}, #{sceName,jdbcType=VARCHAR}, #{scePicture,jdbcType=VARCHAR}, 
+      #{sceContent,jdbcType=VARCHAR}, #{scePrice,jdbcType=REAL}, #{sceVprice,jdbcType=REAL}, 
+      #{sceCount,jdbcType=INTEGER}, #{sceIspush,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="ly.base.po.domain.Scenic" >
+    insert into scenic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sceId != null" >
+        sce_id,
+      </if>
+      <if test="sceName != null" >
+        sce_name,
+      </if>
+      <if test="scePicture != null" >
+        sce_picture,
+      </if>
+      <if test="sceContent != null" >
+        sce_content,
+      </if>
+      <if test="scePrice != null" >
+        sce_price,
+      </if>
+      <if test="sceVprice != null" >
+        sce_vprice,
+      </if>
+      <if test="sceCount != null" >
+        sce_count,
+      </if>
+      <if test="sceIspush != null" >
+        sce_ispush,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sceId != null" >
+        #{sceId,jdbcType=INTEGER},
+      </if>
+      <if test="sceName != null" >
+        #{sceName,jdbcType=VARCHAR},
+      </if>
+      <if test="scePicture != null" >
+        #{scePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="sceContent != null" >
+        #{sceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="scePrice != null" >
+        #{scePrice,jdbcType=REAL},
+      </if>
+      <if test="sceVprice != null" >
+        #{sceVprice,jdbcType=REAL},
+      </if>
+      <if test="sceCount != null" >
+        #{sceCount,jdbcType=INTEGER},
+      </if>
+      <if test="sceIspush != null" >
+        #{sceIspush,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ly.base.po.domain.ScenicExample" resultType="java.lang.Integer" >
+    select count(*) from scenic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update scenic
+    <set >
+      <if test="record.sceId != null" >
+        sce_id = #{record.sceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sceName != null" >
+        sce_name = #{record.sceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scePicture != null" >
+        sce_picture = #{record.scePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sceContent != null" >
+        sce_content = #{record.sceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scePrice != null" >
+        sce_price = #{record.scePrice,jdbcType=REAL},
+      </if>
+      <if test="record.sceVprice != null" >
+        sce_vprice = #{record.sceVprice,jdbcType=REAL},
+      </if>
+      <if test="record.sceCount != null" >
+        sce_count = #{record.sceCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.sceIspush != null" >
+        sce_ispush = #{record.sceIspush,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update scenic
+    set sce_id = #{record.sceId,jdbcType=INTEGER},
+      sce_name = #{record.sceName,jdbcType=VARCHAR},
+      sce_picture = #{record.scePicture,jdbcType=VARCHAR},
+      sce_content = #{record.sceContent,jdbcType=VARCHAR},
+      sce_price = #{record.scePrice,jdbcType=REAL},
+      sce_vprice = #{record.sceVprice,jdbcType=REAL},
+      sce_count = #{record.sceCount,jdbcType=INTEGER},
+      sce_ispush = #{record.sceIspush,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ly.base.po.domain.Scenic" >
+    update scenic
+    <set >
+      <if test="sceName != null" >
+        sce_name = #{sceName,jdbcType=VARCHAR},
+      </if>
+      <if test="scePicture != null" >
+        sce_picture = #{scePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="sceContent != null" >
+        sce_content = #{sceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="scePrice != null" >
+        sce_price = #{scePrice,jdbcType=REAL},
+      </if>
+      <if test="sceVprice != null" >
+        sce_vprice = #{sceVprice,jdbcType=REAL},
+      </if>
+      <if test="sceCount != null" >
+        sce_count = #{sceCount,jdbcType=INTEGER},
+      </if>
+      <if test="sceIspush != null" >
+        sce_ispush = #{sceIspush,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sce_id = #{sceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ly.base.po.domain.Scenic" >
+    update scenic
+    set sce_name = #{sceName,jdbcType=VARCHAR},
+      sce_picture = #{scePicture,jdbcType=VARCHAR},
+      sce_content = #{sceContent,jdbcType=VARCHAR},
+      sce_price = #{scePrice,jdbcType=REAL},
+      sce_vprice = #{sceVprice,jdbcType=REAL},
+      sce_count = #{sceCount,jdbcType=INTEGER},
+      sce_ispush = #{sceIspush,jdbcType=INTEGER}
+    where sce_id = #{sceId,jdbcType=INTEGER}
+  </update>
+</mapper>
